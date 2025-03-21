@@ -57,7 +57,8 @@ paths:
     post:
       consumes:
       - application/json
-      description: Добавление новой песни с добавлением данных от стороннего API
+      description: Добавление новой песни с получением дополнительных данных от стороннего
+        API
       parameters:
       - description: Song to add
         in: body

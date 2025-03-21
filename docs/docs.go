@@ -70,7 +70,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Добавление новой песни с добавлением данных от стороннего API",
+                "description": "Добавление новой песни с получением дополнительных данных от стороннего API",
                 "consumes": [
                     "application/json"
                 ],
