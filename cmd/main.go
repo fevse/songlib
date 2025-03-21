@@ -4,9 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"log"
-	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 	"time"
 
@@ -53,18 +51,12 @@ func main() {
 		if err := server.Stop(ctx); err != nil {
 			log.Fatalf("Failed to stop server: %v", err)
 		}
+		log.Println("Server stopped")
 	}()
 
-	var wg sync.WaitGroup
+	log.Printf("Server started on %v:%v", conf.ServHost, conf.ServPort)
+	if err := server.Start(ctx); err != nil {
+		log.Fatalf("!Server closed: %v", err)
+	}
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		log.Printf("Server started on %v:%v", conf.ServHost, conf.ServPort)
-		if err := server.Start(ctx); err != nil {
-			log.Fatalf("Server closed: %v", err)
-			os.Exit(1)
-		}
-	}()
-	wg.Wait()
 }

@@ -34,7 +34,9 @@ func (s *Server) Start(ctx context.Context) error {
 
 	s.server.Handler = mux
 	err := s.server.ListenAndServe()
-	if err != nil {
+	if err == http.ErrServerClosed {
+		return nil
+	} else if err != nil {
 		return err
 	}
 

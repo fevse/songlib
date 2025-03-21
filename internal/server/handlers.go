@@ -11,7 +11,7 @@ import (
 
 // CreateSong godoc
 // @Summary Добавление новой песни
-// @Description Добавление новой песни с добавлением данных от стороннего API
+// @Description Добавление новой песни с получением дополнительных данных от стороннего API
 // @Tags songs
 // @Accept  json
 // @Produce  json
