@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"log"
 	"os/signal"
+	"sync"
 	"syscall"
 	"time"
 
@@ -43,7 +44,11 @@ func main() {
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 	defer cancel()
 
+	wg := sync.WaitGroup{}
+
+	wg.Add(2)
 	go func() {
+		defer wg.Done()
 		<-ctx.Done()
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 		defer cancel()
@@ -54,9 +59,14 @@ func main() {
 		log.Println("Server stopped")
 	}()
 
-	log.Printf("Server started on %v:%v", conf.ServHost, conf.ServPort)
-	if err := server.Start(ctx); err != nil {
-		log.Fatalf("!Server closed: %v", err)
-	}
+	go func() {
+		defer wg.Done()
+		log.Printf("Server started on %v:%v", conf.ServHost, conf.ServPort)
+		if err := server.Start(ctx); err != nil {
+			log.Fatalf("!Server closed: %v", err)
+		}
+	}()
+
+	wg.Wait()
 
 }
